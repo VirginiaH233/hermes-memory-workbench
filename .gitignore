@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.log
+snapshots/
+done/
+oplog.jsonl
+demo-home/
+demo/
+demotest.log
+public/
