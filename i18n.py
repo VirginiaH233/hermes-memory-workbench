@@ -354,9 +354,12 @@ def resolve_lang(accept: str = "", fallback: str = "zh") -> str:
 def console_lang() -> str:
     """终端横幅用哪种语言：优先 MR_LANG，其次系统区域（海外用户看到英文横幅）。"""
     import os
-    env = (os.environ.get("MR_LANG") or "").strip()
-    if env in ("zh", "en"):
-        return env
+    # MR_LANG（我们的显式覆盖）→ LANG/LC_ALL（mac / Linux / 容器里的标准做法）→ 系统区域
+    env = (os.environ.get("MR_LANG") or os.environ.get("LC_ALL") or os.environ.get("LANG") or "").strip().lower()
+    if env.startswith("zh") or "chinese" in env:
+        return "zh"
+    if env.startswith("en") or env in ("c", "posix"):
+        return "en"
     try:
         import locale
         loc = (locale.getlocale()[0] or "") + (locale.getdefaultlocale()[0] or "")

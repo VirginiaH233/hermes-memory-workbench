@@ -1,5 +1,7 @@
 # Hermes 记忆工作台（hermes-memory-workbench）
 
+[English](README.en.md) | **中文**
+
 **给 Hermes 的记忆做「看 · 改 · 批 · 撤」的本地小页面。**
 
 Hermes 有一个「改记忆前先问过我」的开关（`memory.write_approval`）。打开它之后，AI 想增删改

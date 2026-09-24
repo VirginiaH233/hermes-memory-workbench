@@ -1,5 +1,7 @@
 # Hermes Memory Workbench (hermes-memory-workbench)
 
+[中文](README.md) | **English**
+
 **A local web page to review, edit, approve, and undo your Hermes memory.**
 
 Hermes ships a "ask me before writing memory" switch (`memory.write_approval`). With it on, the
