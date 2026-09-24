@@ -26,13 +26,17 @@ That's the gap this tool fills.
 
 ## What it looks like
 
-| Pending proposals | All memory (the one editing surface) |
-|---|---|
-| ![pending](docs/01-pending.png) | ![memory](docs/02-memory.png) |
+**Pending proposals** — when the agent wants to change your memory, it queues here and waits
 
-| Action log (undo any step) |
-|---|
-| ![log](docs/03-log.png) |
+![pending](docs/01-pending.png)
+
+**All memory (the one editing surface)** — readable text on the left, the exact line that gets written on the right
+
+![memory](docs/02-memory.png)
+
+**Action log (undo any step)** — every write is recorded with its character-count change
+
+![log](docs/03-log.png)
 
 ---
 
