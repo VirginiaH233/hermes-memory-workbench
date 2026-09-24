@@ -227,7 +227,7 @@ BACKEND_EN = {
     "丢弃：": "Discard: ",
     "撤回：": "Undo: ",
     "端口": "port",
-    "记忆审阅台 —— 看、改、批、撤 Hermes 的记忆（本地页面）":
+    "Hermes 记忆工作台 —— 看、改、批、撤 Hermes 的记忆（本地页面）":
         "Memory Workbench — see, edit, approve and undo Hermes memory (local page)",
     "用演示数据启动（假档案，跟你的真实记忆完全隔离）":
         "start with demo data (a fake profile, fully isolated from your real memory)",
@@ -276,7 +276,7 @@ RULES = {
     "整条替换「{}」→「{}」": "Replaced the whole entry “{}” → “{}”",
     "丢弃：{}": "Discarded: {}",
     "撤回：{}": "Undid: {}",
-    "记忆审阅台已启动：{}": "Hermes Memory Workbench running at {}",
+    "Hermes 记忆工作台已启动：{}": "Hermes Memory Workbench running at {}",
     "演示档案位置：{}": "Demo profile folder: {}",
     "启动自检失败（不影响页面浏览）：{}": "Startup self-check failed (browsing still works): {}",
     "这条还剩 {} 处等你决定": "{} more change(s) waiting for your decision",

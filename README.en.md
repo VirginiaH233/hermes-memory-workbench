@@ -1,4 +1,4 @@
-# hermes-memory-workbench
+# Hermes Memory Workbench (hermes-memory-workbench)
 
 **A local web page to review, edit, approve, and undo your Hermes memory.**
 

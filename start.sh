@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 记忆审阅台 —— 启动脚本（macOS / Linux）
+# Hermes 记忆工作台 —— 启动脚本（macOS / Linux）
 #
 # 用法：
 #   ./start.sh              看自己的真实记忆

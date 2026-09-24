@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""server.py —— 「记忆审阅台」本地页面（只监听 127.0.0.1，不对外开放）。
+"""server.py —— 「Hermes 记忆工作台」本地页面（只监听 127.0.0.1，不对外开放）。
 
 设计原则：
   · 本文件不 import Hermes 任何代码 —— 只做文件读写和排版（纯规则，无 AI）
@@ -27,7 +27,7 @@ TOOL_DIR = Path(__file__).resolve().parent
 def _args():
     import argparse
     CL = i18n.console_lang()
-    ap = argparse.ArgumentParser(description=i18n.t("记忆审阅台 —— 看、改、批、撤 Hermes 的记忆（本地页面）", CL))
+    ap = argparse.ArgumentParser(description=i18n.t("Hermes 记忆工作台 —— 看、改、批、撤 Hermes 的记忆（本地页面）", CL))
     ap.add_argument("--demo", action="store_true",
                     help=i18n.t("用演示数据启动（假档案，跟你的真实记忆完全隔离）", CL))
     ap.add_argument("--demo-reset", action="store_true",
@@ -488,7 +488,7 @@ def main():
         say("  演示档案位置：{}", ROOT)
     srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     url = f"http://127.0.0.1:{PORT}/"
-    say("记忆审阅台已启动：{}", url)
+    say("Hermes 记忆工作台已启动：{}", url)
     say("（关掉这个窗口就是关掉它；它不改 Hermes 任何东西）")
 
     def _selfcheck():

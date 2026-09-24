@@ -1,4 +1,4 @@
-# 记忆审阅台（hermes-memory-workbench）
+# Hermes 记忆工作台（hermes-memory-workbench）
 
 **给 Hermes 的记忆做「看 · 改 · 批 · 撤」的本地小页面。**
 

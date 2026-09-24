@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
-title 记忆审阅台
-rem 记忆审阅台 —— 启动脚本（Windows）
+title Hermes 记忆工作台
+rem Hermes 记忆工作台 —— 启动脚本（Windows）
 rem   双击这个文件 = 看自己的真实记忆
 rem   想看演示数据：在这个目录开命令行，跑  start.cmd --demo
 rem 只依赖 Python 3.9+（标准库），不需要装任何东西。
