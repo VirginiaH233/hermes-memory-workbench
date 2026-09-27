@@ -170,6 +170,18 @@ def main() -> int:
         print("\n4) 真改写一条并撤回（验证「撤得回去」—— 整条替换的撤回）")
         md5_before = hashlib.md5("\n".join((st2.get("memory") or {}).get("memory") or [])
                                  .encode("utf-8")).hexdigest()
+        # 这条提议在磁盘上是「旧格式」：没有 matched_entry（钉住要改的那一整条）。
+        # Hermes 2026-09-24 起会**拒绝**重放这种 replace/remove（担心命中一条批准者没见过的新条目），
+        # 所以工具必须自己按同一套规则钉好再交 —— 下面这条断言守住「我们确实在测这条路径」。
+        rec_file = TOOL / "demo-home" / "pending" / "memory" / "demo0002.json"
+        try:
+            rec_raw = json.loads(rec_file.read_text(encoding="utf-8"))
+        except Exception as e:  # noqa: BLE001
+            rec_raw = {}
+            ok("能读到那条待审记录文件", False, f"{rec_file}: {e}")
+        ok("待审记录是「旧格式」（没有 matched_entry）—— 正是要测的那条路径",
+           rec_raw and "matched_entry" not in json.dumps(rec_raw, ensure_ascii=False),
+           f"{rec_file.name}")
         s, r = post("/api/record/approve_one", {"id": "demo0002", "index": 0})
         ok("第 1 处改动批准成功", r.get("ok") is True, str(r.get("error") or "")[:90])
         log_id = r.get("log_id", "")

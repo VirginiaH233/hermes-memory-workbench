@@ -477,17 +477,46 @@ class Handler(BaseHTTPRequestHandler):
         return {"ok": False, "error": f"未知接口 {path}"}
 
 
+def port_in_use(port: int) -> bool:
+    """这个端口上是不是已经有东西在听？
+
+    ⚠️ 不能靠「bind 会不会失败」来判断：Windows 上 SO_REUSEADDR 让第二次 bind 也成功，
+    于是一个人双击两次就会静默跑起两个实例（页面看着还是旧的、关掉窗口页面还在）。
+    """
+    import socket
+    s = socket.socket()
+    s.settimeout(0.4)
+    try:
+        s.connect(("127.0.0.1", int(port)))
+        return True
+    except OSError:
+        return False
+    finally:
+        s.close()
+
+
 def main():
     cl = i18n.console_lang()          # 终端横幅也跟着系统区域走（海外用户看到英文）
 
     def say(s, *args, **vars):
         print(i18n.t(s, cl, *args, **vars))
 
+    url = f"http://127.0.0.1:{PORT}/"
+    if port_in_use(PORT):
+        # 已经有一个在跑：不报错、不叠第二个，直接把浏览器指过去（重复双击 = 打开页面）
+        say("这个端口上已经有一个在跑了 —— 直接用这个地址：{}", url)
+        say("（打不开的话，说明占用端口 {} 的是别的程序：换成 python server.py --port 8899）", PORT)
+        if not os.environ.get("MR_NO_BROWSER"):
+            try:
+                webbrowser.open(url)
+            except Exception:  # noqa: BLE001
+                pass
+        return
+
     if DEMO:
         say("★ 演示模式：用的是演示档案（假数据），你的真实记忆不会被碰。")
         say("  演示档案位置：{}", ROOT)
     srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    url = f"http://127.0.0.1:{PORT}/"
     say("Hermes 记忆工作台已启动：{}", url)
     say("（关掉这个窗口就是关掉它；它不改 Hermes 任何东西）")
 

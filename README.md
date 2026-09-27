@@ -46,16 +46,24 @@ Hermes 有一个「改记忆前先问过我」的开关（`memory.write_approval
 
    （`default` 换成你想管的那份档案名；不加 `-p` 改的是当前激活档案 —— 这是个常踩的坑）
 
-2. 双击 `start.cmd`（Windows）或 `./start.sh`（mac / Linux）。浏览器会自动打开 `http://127.0.0.1:8787/`。
+2. 启动它：
+
+   - **Windows**：双击 `start-silent.vbs` —— **不弹黑窗口**，浏览器会自动打开 `http://127.0.0.1:8787/`。
+     （想看启动日志、或要排查问题时，改双击 `start.cmd`，那个会留一个窗口。）
+   - **mac / Linux**：`./start.sh`
+
+   想在桌面放个图标：把 `start-silent.vbs` 拖到桌面（或右键 → 发送到 → 桌面快捷方式），
+   再右键快捷方式 → 属性 → 更改图标 → 选同目录的 `icon.ico`。
 
 3. 让 Hermes 记住一件事（比如「记住我对花生过敏」），回到页面刷新 —— 队列里就出现一条待审提议。
 
 **想先看它长什么样？用演示档案**（一整套假数据，碰不到你的真实记忆）：
 
 ```
-start.cmd --demo        （Windows）
-./start.sh --demo       （mac / Linux）
-python server.py --demo （通用）
+start-silent.vbs --demo   （Windows，无黑框；写成 wscript start-silent.vbs --demo 也行）
+start.cmd --demo          （Windows，带日志窗口）
+./start.sh --demo         （mac / Linux）
+python server.py --demo   （通用）
 ```
 
 ---

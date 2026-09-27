@@ -309,6 +309,38 @@ def matched_entry(store, payload: dict) -> str:
     return hits[0] if hits else ""
 
 
+def pin_destructive(store, payload: dict) -> dict:
+    """把「这句话指向的那一整条」钉进 payload，再交给 Hermes 落库。
+
+    为什么必须钉：Hermes 2026-09-24 起（commit `3da1c59377`）**拒绝**没有钉住匹配条目的
+    replace/remove —— 理由是「旧记录没钉，重放时可能命中一条批准者从没见过的新条目」。
+    这是对的判断，我们照做：
+
+    * 卡片上早就把「这一整条会被覆盖」的原文摊给用户看过（用的是同一套匹配规则），
+      所以在这里钉进「我刚才给你看的那一条」是忠实的；
+    * 钉不进去（旧文已经找不到 / 命中多条）时**不猜**，原样交给 Hermes —— 它会明确拒绝，
+      我们把那句话原样显示给用户，页面上那条对应改动也早被标成「落不了地」。
+    """
+    if not isinstance(payload, dict):
+        return payload
+    act = payload.get("action")
+    out_obj = dict(payload)
+    if act in ("replace", "remove"):
+        if not out_obj.get("matched_entry"):
+            hit = matched_entry(store, payload)
+            if hit:
+                out_obj["matched_entry"] = hit
+    elif act == "batch":
+        ops = []
+        for op in (payload.get("operations") or []):
+            if isinstance(op, dict) and op.get("action") in ("replace", "remove") and not op.get("matched_entry"):
+                hit = matched_entry(store, {**op, "target": payload.get("target", "memory")})
+                op = {**op, **({"matched_entry": hit} if hit else {})}
+            ops.append(op)
+        out_obj["operations"] = ops
+    return out_obj
+
+
 def run_payload(payload: dict, dry: bool = False):
     """执行一次写入 → (结果, 写前用量, 写后用量, 快照名)。
 
@@ -334,7 +366,7 @@ def run_payload(payload: dict, dry: bool = False):
             s = load_store()
             pre = matched_entry(s, payload) if watch else ""
             before = usage_of(s)
-            res = apply_pending(payload, s)
+            res = apply_pending(pin_destructive(s, payload), s)
             return attach(res, pre), before, usage_of(load_store()), None
         finally:
             os.environ["HERMES_HOME"] = str(HOME)
@@ -344,7 +376,7 @@ def run_payload(payload: dict, dry: bool = False):
     s = load_store()
     pre = matched_entry(s, payload) if watch else ""
     before = usage_of(s)
-    res = apply_pending(payload, s)
+    res = apply_pending(pin_destructive(s, payload), s)
     return attach(res, pre), before, usage_of(load_store()), snap
 
 

@@ -52,8 +52,15 @@ Requirements: **Hermes** installed, and **Python 3.9+** (no Python packages need
 
    Note: without `-p`, this writes the *currently active* profile — a common trap.
 
-2. Double-click `start.cmd` (Windows) or run `./start.sh` (mac / Linux).
-   The browser opens `http://127.0.0.1:8787/` automatically.
+2. Start it:
+
+   - **Windows**: double-click `start-silent.vbs` — **no console window**, the browser opens
+     `http://127.0.0.1:8787/` for you. (Double-click `start.cmd` instead when you want to see the
+     log or debug something; that one keeps a window open.)
+   - **mac / Linux**: `./start.sh`
+
+   Want an icon on your desktop? Drag `start-silent.vbs` to the desktop (or right-click → Send to →
+   Desktop), then right-click the shortcut → Properties → Change Icon → pick `icon.ico`.
 
 3. Ask Hermes to remember something ("remember I'm allergic to peanuts"), refresh the page —
    your first pending proposal appears.
@@ -61,9 +68,10 @@ Requirements: **Hermes** installed, and **Python 3.9+** (no Python packages need
 **Want to look around first? Demo mode** (a full set of fake data, your real memory untouched):
 
 ```
-start.cmd --demo        (Windows)
-./start.sh --demo       (mac / Linux)
-python server.py --demo (any platform)
+start-silent.vbs --demo   (Windows, no console window)
+start.cmd --demo          (Windows, keeps a log window)
+./start.sh --demo         (mac / Linux)
+python server.py --demo   (any platform)
 ```
 
 ---

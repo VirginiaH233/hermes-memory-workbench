@@ -277,6 +277,10 @@ RULES = {
     "丢弃：{}": "Discarded: {}",
     "撤回：{}": "Undid: {}",
     "Hermes 记忆工作台已启动：{}": "Hermes Memory Workbench running at {}",
+    "这个端口上已经有一个在跑了 —— 直接用这个地址：{}":
+        "Something is already running on this port — just open {}",
+    "（打不开的话，说明占用端口 {} 的是别的程序：换成 python server.py --port 8899）":
+        "(If that doesn't open, the port is held by another program: use python server.py --port 8899)",
     "演示档案位置：{}": "Demo profile folder: {}",
     "启动自检失败（不影响页面浏览）：{}": "Startup self-check failed (browsing still works): {}",
     "这条还剩 {} 处等你决定": "{} more change(s) waiting for your decision",

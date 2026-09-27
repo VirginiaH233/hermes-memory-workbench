@@ -1,3 +1,12 @@
+# 换行符约定
+# ⚠️ git 对同一个路径取**最后一个匹配的规则**（后写的覆盖先写的），
+#    所以「默认规则」必须写在前面、具体后缀的例外写在后面 —— 顺序反了会静默失效（踩过）。
+#
+# .cmd / .vbs 必须是 CRLF，而且**仓库里也要存 CRLF**：双击的 .cmd 如果是 LF 换行，
+# cmd.exe 会错行解析、表现成「双击毫无反应」（实测过）；而 GitHub 下载 zip 拿到的
+# 就是仓库里的字节，所以这两个后缀标成 -text（不做任何转换）。
 * text=auto eol=lf
-*.cmd text eol=crlf
+*.cmd -text
+*.vbs -text
+*.ico binary
 *.png binary
