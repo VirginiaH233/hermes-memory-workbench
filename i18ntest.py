@@ -272,6 +272,36 @@ def covered(s: str) -> bool:
     return False
 
 
+def console_literals():
+    """终端里打印的文案（say(...) / print(...) 的第一个字符串参数）。
+
+    单独拎出来测，是因为终端和中转路径用的是**两个不同的查表函数**：
+    `t()` 查 EN（页面 + 后台词条）、`tr()` 查 RULES（拼好的句子）。
+    放在错的那个字典里，效果就是「英文系统里终端横幅还是中文」——
+    而只检查「词典里有没有这条」的旧测法会把这种错放过去（踩过）。
+    """
+    out = set()
+    for path in ("server.py", "ops.py"):
+        tree = ast.parse(Path(path).read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            fn = node.func
+            name = getattr(fn, "id", None) or getattr(fn, "attr", None)
+            if name not in ("say", "print") or not node.args:
+                continue
+            a = node.args[0]
+            if isinstance(a, ast.Constant) and isinstance(a.value, str):
+                if CJK.search(a.value):
+                    out.add(norm(a.value))
+            elif isinstance(a, ast.JoinedStr):
+                s = norm("".join(str(p.value) if isinstance(p, ast.Constant) else "{}"
+                                 for p in a.values))
+                if CJK.search(s):
+                    out.add(s)
+    return out
+
+
 def main():
     import i18n
 
@@ -318,6 +348,19 @@ def main():
     ok(i18n.resolve_lang("en-US,en;q=0.9") == "en", "en-US → 英文")
     ok(i18n.resolve_lang("") == "zh", "拿不到头信息 → 中文")
     ok(i18n.resolve_lang("ja-JP") == "en", "其它语言 → 英文")
+
+    print("\n8) 终端文案在英文下真的变英文（查的是 t() 用的那个字典）")
+    cons = sorted(console_literals())
+    stuck = [s for s in cons if i18n.t(s, "en") == s]
+    ok(not stuck, f"终端文案全部能翻成英文（{len(cons)} 条，卡住 {len(stuck)} 条）")
+    for s in stuck[:6]:
+        print("        ", s[:70])
+    # 反向守住：这条检查必须在「词条放错字典」时真的报错（否则它只是装饰）
+    probe = "这条词条只在 RULES 里，终端不该查不到：{}"
+    i18n.RULES[probe] = "should not be found by t()"
+    caught = i18n.t(probe, "en") == probe
+    ok(caught, "反向验证：只放在 RULES 里的词条，终端检查会把它抓出来")
+    i18n.RULES.pop(probe, None)
 
     print()
     if FAILS:

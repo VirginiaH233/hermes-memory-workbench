@@ -243,6 +243,16 @@ BACKEND_EN = {
         "change; make the old text the full entry",
     "（已按当时快照补全被覆盖的那一整条）":
         " (the whole overwritten entry was restored from the snapshot taken at the time)",
+    # ⚠️ 终端（console）文案必须有英文：这些是 server.py 用 say() 直接打印的句子，
+    #    走的是 t()（查 EN），不是 tr()（查 RULES）。放错字典的后果是「英文系统里横幅还是中文」，
+    #    而且 i18ntest 的旧检查只看「词典里有没有这条」——它曾经把横幅的漏翻放过去了。
+    "Hermes 记忆工作台已启动：{}": "Hermes Memory Workbench running at {}",
+    "这个端口上已经有一个在跑了 —— 直接用这个地址：{}":
+        "Something is already running on this port — just open {}",
+    "（打不开的话，说明占用端口 {} 的是别的程序：换成 python server.py --port 8899）":
+        "(If that doesn't open, something else is holding port {}: use python server.py --port 8899)",
+    "演示档案位置：{}": "Demo profile folder: {}",
+    "启动自检失败（不影响页面浏览）：{}": "Startup self-check failed (browsing still works): {}",
 }
 
 # ---------- 带参数的句子：中文模板（{} 占位）→ 英文模板 ----------
@@ -276,13 +286,6 @@ RULES = {
     "整条替换「{}」→「{}」": "Replaced the whole entry “{}” → “{}”",
     "丢弃：{}": "Discarded: {}",
     "撤回：{}": "Undid: {}",
-    "Hermes 记忆工作台已启动：{}": "Hermes Memory Workbench running at {}",
-    "这个端口上已经有一个在跑了 —— 直接用这个地址：{}":
-        "Something is already running on this port — just open {}",
-    "（打不开的话，说明占用端口 {} 的是别的程序：换成 python server.py --port 8899）":
-        "(If that doesn't open, the port is held by another program: use python server.py --port 8899)",
-    "演示档案位置：{}": "Demo profile folder: {}",
-    "启动自检失败（不影响页面浏览）：{}": "Startup self-check failed (browsing still works): {}",
     "这条还剩 {} 处等你决定": "{} more change(s) waiting for your decision",
     "已丢掉第 {} 处，还剩 {} 处": "Discarded change #{}; {} left",
     "读到 {} 条记忆，用量 {}": "read {} entries, usage {}",
